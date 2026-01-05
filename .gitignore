@@ -3,4 +3,3 @@ node_modules
 .env
 postgres/
 dist/
-/src/generated/prisma
