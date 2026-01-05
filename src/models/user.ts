@@ -1,11 +1,16 @@
 import "dotenv/config";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client/edge";
 import { PrismaPg } from "@prisma/adapter-pg";
 
-const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL,
-});
+const connectionString = process.env.DATABASE_URL;
+if (!connectionString) {
+  throw new Error("DATABASE_URL is not defined in environment variables");
+}
 
-const prisma = new PrismaClient({ adapter });
+const adapter = new PrismaPg({ connectionString });
+const prisma = new PrismaClient({
+  adapter,
+  log: ["query", "info", "warn", "error"],
+});
 
 export default prisma.user;
